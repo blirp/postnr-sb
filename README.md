@@ -62,3 +62,7 @@ Resultatet er en liste av poststeder identisk med GET-søket over:
   }
 ]
 ```
+
+### Feilhåndtering
+
+Ved ugyldig innputt, vil begge endepunktene returnere en liste av feilmeldingsobjekter.

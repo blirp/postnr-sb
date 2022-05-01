@@ -1,8 +1,12 @@
 package org.larma.postnr;
 
+import org.larma.validation.Numeric;
+
 public class PostnrInfo {
+    @Numeric
     public final String postnr;
     public final String poststed;
+    @Numeric
     public final String kommunenr;
     public final String kommune;
 

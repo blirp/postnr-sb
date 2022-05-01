@@ -1,12 +1,16 @@
 package org.larma.postnr;
 
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 @Service
+@Validated
 public class PostnrService {
     private final static List<PostnrInfo> db = new ArrayList<>();
 
@@ -16,7 +20,7 @@ public class PostnrService {
     }
 
     public List<PostnrInfo> search(
-            final PostnrInfo q)
+            @Valid final PostnrInfo q)
     {
         return db.stream()
                 .filter(f -> checkSearch(q.postnr, f.postnr))
