@@ -15,12 +15,12 @@ mvn spring-boot:run
 
 Søk i databasen over postnummer med en GET mot /postnr. Søket tar inntil fire parametre.
 
-| Parameter | Betydning |
---- | --- |
-| pn | Postnummer |
-| ps | Poststed |
-| kn | Kommunenr |
-| k | Kommunenavn |
+| Parameter | Betydning | Type | 
+--- | --- | --- |
+| pn | Postnummer | Numerisk |
+| ps | Poststed | | Streng |
+| kn | Kommunenr | Numerisk |
+| k | Kommunenavn | Streng |
 
 Ex:
 ```shell
@@ -44,6 +44,8 @@ Resultatet er en liste av poststeder som matcher søkekriteriene:
 
 Søk i databasen over postnummer med en POST mot /postnr. Søket tar inn et JSON-objekt på samme format som resultatet. Ingen av feltene er påkrevd. De feltene som er med, påvirker søket.
 
+Hvis `kommunenr` eller `postnr` er angitt, må disse være numeriske.
+
 Ex:
 ```shell
 jq --null-input "{postnr:5230}" > pnOk.json
@@ -66,3 +68,18 @@ Resultatet er en liste av poststeder identisk med GET-søket over:
 ### Feilhåndtering
 
 Ved ugyldig innputt, vil begge endepunktene returnere en liste av feilmeldingsobjekter.
+
+For eksempel, vil
+```shell
+curl -s localhost:8080/postnr?pn=Bergen | jq
+```
+
+returnere beskjed om at `pn` krever numerisk innputt:
+```json
+[
+  {
+    "property": "search.q.postnr",
+    "message": "Fikk 'Bergen' der numerisk verdi var forventet."
+  }
+]
+```
